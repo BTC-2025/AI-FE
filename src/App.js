@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
 import {
-  Planet, Plus, ChatCircleDots,
+  Plus, ChatCircleDots,
   GitBranch, ChatText, Gear, CaretDown,
   Paperclip, PaperPlaneRight,
   Database,
@@ -10,6 +10,7 @@ import {
   MagnifyingGlass, ArrowSquareOut, Warning,
   List, X
 } from '@phosphor-icons/react';
+import logo from './assests/kinswords.png'
 
 function App() {
   const [activeView, setActiveView] = useState('chat'); // 'chat' or 'settings'
@@ -112,7 +113,7 @@ function App() {
       <aside className={`sidebar ${!sidebarOpen ? 'sidebar-collapsed' : ''}`}>
         <div className="sidebar-header">
           <div className="logo">
-            <Planet weight="fill" size={24} />
+            <img src={logo} alt="KinsWord Logo" width={24} height={24} style={{ objectFit: 'contain' }} />
             <span>KINSWORD</span>
           </div>
           <div className="sidebar-header-actions">
@@ -160,8 +161,8 @@ function App() {
             {sidebarOpen ? <X size={22} /> : <List size={22} />}
           </button>
           <div className="logo">
-            <Planet weight="fill" size={20} />
-            <span>Beta AI</span>
+            <img src={logo} alt="KinsWord Logo" width={20} height={20} style={{ objectFit: 'contain' }} />
+            <span>KINSWORD</span>
           </div>
           <div style={{ width: 36 }} />
         </div>
@@ -190,7 +191,7 @@ function App() {
                 {!searchLoading && !searchResults && !searchError && (
                   <div className="search-welcome">
                     <div className="search-welcome-icon">
-                      <MagnifyingGlass weight="fill" size={32} />
+                      <img src={logo} alt="KinsWord Logo" width={50} height={50} style={{ objectFit: 'contain' }} />
                     </div>
                     <h2>Search the Web</h2>
                     <p>Type a query below and hit Enter to search via the KINSWORD AI Search Engine.</p>
@@ -255,8 +256,8 @@ function App() {
               <>
                 {messages.length === 0 && (
                   <div className="welcome-screen">
-                    <div className="logo-large-wrap">
-                      <Planet weight="fill" size={32} />
+                    <div className="logo-large-wrap" style={{ background: 'transparent', boxShadow: 'none' }}>
+                      <img src={logo} alt="KinsWord Logo" width={64} height={64} style={{ objectFit: 'contain' }} />
                     </div>
                     <h1>What can I help you build today?</h1>
                     <div className="suggestion-chips">
@@ -270,7 +271,7 @@ function App() {
                 {messages.map((msg, i) => (
                   <div key={i} className={`message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`}>
                     <div className="message-avatar" style={msg.role === 'user' ? { backgroundImage: 'url("https://i.pravatar.cc/100?img=33")' } : {}}>
-                      {msg.role === 'ai' && <Planet weight="fill" size={20} />}
+                      {msg.role === 'ai' && <img src={logo} alt="AI" width={20} height={20} style={{ objectFit: 'contain' }} />}
                     </div>
                     <div className="message-content">
                       <p>{msg.content}</p>
@@ -280,7 +281,7 @@ function App() {
 
                 {isTyping && (
                   <div className="message ai-message">
-                    <div className="message-avatar"><Planet weight="fill" size={20} /></div>
+                    <div className="message-avatar"><img src={logo} alt="AI" width={20} height={20} style={{ objectFit: 'contain' }} /></div>
                     <div className="message-content">
                       <div className="typing-indicator">
                         <div className="typing-dot"></div><div className="typing-dot"></div><div className="typing-dot"></div>
@@ -300,7 +301,7 @@ function App() {
                 className={`mode-tab ${inputMode === 'chat' ? 'active' : ''}`}
                 onClick={() => setInputMode('chat')}
               >
-                <Planet size={15} />
+                <img src={logo} alt="Chat" width={15} height={15} style={{ verticalAlign: 'middle', marginRight: '4px' }} />
                 AI Chat
               </button>
               <button
@@ -531,7 +532,7 @@ function App() {
                     </div>
                     <div className="plan-details">
                       <ul>
-                        <li><Planet size={16} color="var(--accent)" /> Unlimited Standard Chats</li>
+                        <li><img src={logo} alt="feature" width={16} height={16} /> Unlimited Standard Chats</li>
 
                         <li><Database size={16} color="var(--accent)" /> Custom Supabase Integration</li>
                         <li><ChatCircleDots size={16} color="var(--accent)" /> Priority Support</li>
