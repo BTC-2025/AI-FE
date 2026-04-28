@@ -44,7 +44,8 @@ function App() {
   // --- BNX AUTH LOGIC ---
   const fetchUserProfile = async (token) => {
     try {
-      const res = await fetch('https://api.bnxmail.com/api/users/me', {
+      const apiUrl = process.env.REACT_APP_BNX_API_URL;
+      const res = await fetch(`${apiUrl}/api/users/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -64,10 +65,11 @@ function App() {
   };
 
   const loginWithBNX = () => {
-    const clientId = 'bnx-test-app';
-    const redirectUri = 'https://www.kinsword.com';
+    const clientId = process.env.REACT_APP_CLIENT_ID || 'kinsword';
+    const redirectUri = process.env.REACT_APP_REDIRECT_URI || 'https://www.kinsword.com';
     const state = 'beta-ai-auth';
-    window.location.href = `https://www.b2auth.com/?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
+    const authUrl = process.env.REACT_APP_BNX_AUTH_URL || 'https://www.b2auth.com';
+    window.location.href = `${authUrl}/?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
   };
 
   useEffect(() => {
@@ -76,14 +78,15 @@ function App() {
 
     if (code) {
       console.log('OAuth code detected, exchanging for token...');
-      fetch('https://api.bnxmail.com/api/oauth/token', {
+      const apiUrl = process.env.REACT_APP_BNX_API_URL;
+      fetch(`${apiUrl}/api/oauth/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           grantType: 'authorization_code',
           code,
-          clientId: 'bnx-test-app',
-          clientSecret: 'secure-test-secret-2026'
+          clientId: process.env.REACT_APP_CLIENT_ID || 'kinsword',
+          clientSecret: process.env.REACT_APP_CLIENT_SECRET || 'secure-test-secret-2026'
         })
       })
       .then(res => res.json())
@@ -141,7 +144,8 @@ function App() {
     console.log('Web Search initiated for:', query);
     setLoadingStates(prev => ({ ...prev, all: true }));
     try {
-      const res = await fetch(`http://localhost:8000/api/search/?q=${encodeURIComponent(query)}`);
+      const searchApiUrl = process.env.REACT_APP_SEARCH_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${searchApiUrl}/api/search/?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       console.log('Web Search Response:', data);
       if (!res.ok) {
@@ -162,7 +166,8 @@ function App() {
     console.log('Image Search initiated for:', query);
     setLoadingStates(prev => ({ ...prev, images: true }));
     try {
-      const res = await fetch(`http://localhost:8000/api/search/images/?q=${encodeURIComponent(query)}`);
+      const searchApiUrl = process.env.REACT_APP_SEARCH_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${searchApiUrl}/api/search/images/?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       console.log('Image Search Response:', data);
       if (!res.ok) {
@@ -516,7 +521,7 @@ function App() {
                         {resultsCache[searchCategory].map((img, i) => (
                           <div key={i} className="image-result-card">
                             <div className="image-wrapper">
-                              <img src={img.local_url ? `http://localhost:8000${img.local_url}` : img.url} alt={img.alt} />
+                              <img src={img.local_url ? `${process.env.REACT_APP_SEARCH_API_URL || 'http://localhost:8000'}${img.local_url}` : img.url} alt={img.alt} />
                               <div className="image-overlay">
                                 <a href={img.page_url} target="_blank" rel="noreferrer" className="image-source-link">
                                   <img src={img.favicon || logo} alt="site" />
@@ -694,7 +699,7 @@ function App() {
                           
                           <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>This account is managed via BNX Identity.</p>
-                            <button className="btn-secondary-outline" onClick={() => window.open('https://www.b2auth.com', '_blank')}>Manage on BNX Dashboard</button>
+                            <button className="btn-secondary-outline" onClick={() => window.open(process.env.REACT_APP_BNX_AUTH_URL || 'https://www.b2auth.com', '_blank')}>Manage on BNX Dashboard</button>
                           </div>
                         </div>
                       </div>
